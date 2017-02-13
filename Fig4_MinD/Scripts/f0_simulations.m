@@ -1,4 +1,4 @@
-function [F_profiles_all, D_profiles_all] = f0_simulations
+function [F_profiles_all, D_profiles_all] = f0_simulations(options)
  
 % Dmitry Ershov 2016
 % adopted from Hans Meinhardt, 2001,
@@ -43,13 +43,24 @@ function [F_profiles_all, D_profiles_all] = f0_simulations
 write_video         = 0;                % save video file
 showFrames          = 0;                % show frames 
 
+if ~exist('options','var')
+    options = {};
+end
+
+if ~isfield(options,'showResultFigure')
+    options.showResultFigure = 1;
+end
 
 %% SIMULATION PARAMETERS
 
 % lengths regimes of cells; each length entry = one cell.
 % One can choose the length span of interest from provided kymos.
-lengthSet           = 70 : 1 : 80;      % close to the length regime with 4 division sites
-% lengthSet         = 15 : 1 : 100;     % all lengths regimes (from 1 division site to 5 division sites)
+% lengthSet           = 70 : 1 : 80;      % close to the length regime with 4 division sites
+if isfield(options,'lengthSet')
+    lengthSet=options.lengthSet;
+else
+    lengthSet         = 15 : 1 : 100;     % all lengths regimes (from 1 division site to 5 division sites)
+end
 
 fluctAmplitude      = 0.005;            % Noise amplitude in autocatalytic parameters.
                                         % If set to 0 patternd doesnt form; noise is crucial for 
@@ -381,16 +392,17 @@ end
 image_all_0(image_all_0 ~= 0) = image_all_0(image_all_0 ~= 0) + 200; 
 
 
-figure;
-imagesc(image_all_1);
-colormap gray
-title('aligned by cell center')
+if options.showResultFigure
+    figure;
+    imagesc(image_all_1);
+    colormap gray
+    title('aligned by cell center')
 
-figure;
-imagesc(image_all_0); 
-colormap gray
-title('aligned by cell ends')
-
+    figure;
+    imagesc(image_all_0); 
+    colormap gray
+    title('aligned by cell ends')
+end
 
 % one can do try to rescale pix -> um.
 % settings should be entered manually...

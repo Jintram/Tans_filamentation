@@ -1,4 +1,4 @@
-function DE_ftsA_kymo_and_divisions(choose_case, x_time_btw_frames)
+function theFigureHandles = DE_ftsA_kymo_and_divisions(choose_case, x_time_btw_frames,opts)
 
 % choose_case               int 1,2,... - number of experiment.(there is a list in the local function 'make_path')
 % x_time_btw_frames         in seconds - get from images of the experiment!!!!
@@ -19,10 +19,21 @@ function DE_ftsA_kymo_and_divisions(choose_case, x_time_btw_frames)
 % path_root\2014-08-26\pos1\
 % path_root\2014-08-26\pos3\remeasured\
 % path_root\...
+%
+% Addition MW
+% - opts.hideExtraInfo=1    suppresses text that is not needed for 
+%                           manuscript in overall kymograph
+% - opts.whiteBackground    creates white background
+%
+% Note that the kymograph has a few negative-valued pixels that identify
+% certain types of pixels, like background (0.0003) and separators
+% (0.0001). If the max value of the kymographs is very low this might
+% distort the picture.
 
-path_root                   = 'G:\DE_documents\AMOLF stuff\3_Rutgers_project\Recent Data\FtsA_analysis\';
-
-
+% Original path from Dmitry:
+%path_root                   = 'G:\DE_documents\AMOLF stuff\3_Rutgers_project\Recent Data\FtsA_analysis\';
+% New path (MW):
+path_root = '\\storage01\data\AMOLF\groups\tans-group\Biophysics\Experiments_Rutger\Dmitry\3_Rutgers_project\Recent Data\FtsA_analysis\';
 
 
 
@@ -56,7 +67,9 @@ opts.x_manual_range.x1      = 50;
 opts.x_manual_range.x2      = 650;
 opts.x_manual_range.x_step  = 100;
 
-
+% Options added by MW
+opts.SeparatorLineColor     = [48/255, 197/255, 221/255]; % MW
+opts.DY                     = 15; % y-distance over which to scan for previous separator line (decides where to print red lines)
 
 % get paths:
 path_i          = make_path(path_root, choose_case);
@@ -72,41 +85,69 @@ path_i          = make_path(path_root, choose_case);
 % cells.
 [kymograph, kymograph_clean] = make_kymo_from_B(B, temp_L, opts);
 
+if isfield(opts,'whiteBackground')
+    backgroundIndices = (kymograph==-0.0003);
+    kymograph(backgroundIndices) = max(kymograph(:));
+end
+
 % make kymo for the longest cell:
 longest_cell_kymo = make_longest_cell_kymo(B, opts);
 
 
 
 
+%% Export vars
+theFigureHandles = [];
+
+
+%% ====================   PLOTTING   ==================================
+theFigureHandles = plot_ftsA_profiles_in_time(B, choose_case, theFigureHandles);
 
 
 
-% ====================   PLOTTING   ===================================
-plot_ftsA_profiles_in_time(B, choose_case);
-
-
-
-
-figure;
+% Plotting of kymograph that is used in final figure
+theFigureHandles(end+1)=figure; 
 % show image:
 % figure('position',[     213   433   653   430])
-imagesc(kymograph)
+
+% Actual plotting of the kymograph
+imagesc(kymograph);
+colormap gray
 hold on;
 
 % plot the separators between cells
-[row_yy, col_xx] = find(kymograph<0);
+
+% Find separator pixels (indicated by value of -0.0001)
+[row_yy, col_xx] = find(kymograph==-0.0001);
+
+ysize=size(kymograph,1);
+xsize=size(kymograph,2);
 % plot([col_xx - 0.5, col_xx + 0.5], [row_yy, row_yy], 'r.')
+
+% Add lines that demarcate cellular edges
 for i=1:length(col_xx)
-    plot([col_xx(i) - 0.5, col_xx(i) + 0.5 ], [row_yy(i), row_yy(i)], 'r-','LineWidth', 2)
+    
+    plot([col_xx(i) - 0.5, col_xx(i) + 0.5 ], [row_yy(i), row_yy(i)], '-','LineWidth', 2,'Color',opts.SeparatorLineColor)    
+       
+    % This recognizes division separators based on the kymograph.
+    % TODO: This might be more easily done if these pixels where marked
+    % specifically.
+    if ~any( kymograph(min(max(1,row_yy(i) + [-opts.DY:opts.DY]),ysize) , max(1,col_xx(i)-1) ) < 0)
+        plot([col_xx(i) - 0.5, col_xx(i) + 0.5 ], [row_yy(i), row_yy(i)], '-','LineWidth', 2,'Color','r')
+    end
+    
 end
 
-title_short_path = path_i([strfind(path_i, 'FtsA_analysis\')+length('FtsA_analysis\')] : end);
-title(num2str(choose_case))%({'exp name:', title_short_path})
-text(1,25, title_short_path, 'color', 'w', 'FontSize', Font_size)
 
-colormap gray
-ylabel('length, um')%, 'FontSize', Font_size)
-xlabel('time, min')
+title_short_path = path_i([strfind(path_i, 'FtsA_analysis\')+length('FtsA_analysis\')] : end);
+if ~isfield(opts,'hideExtraInfo')
+    title(num2str(choose_case))%({'exp name:', title_short_path})
+    text(1,25, title_short_path, 'color', 'w', 'FontSize', Font_size)
+end
+disp(['Overall kymograph based on: ' title_short_path])
+
+ylabel('Cellular axis (\mum)')%, 'FontSize', Font_size)
+xlabel('Time (min)')
 
 convert_x_y_ticks(opts);
 
@@ -146,7 +187,7 @@ end
 
 % -----------   separate kymo for the longest cell:  ----------------------
 if opts.plot_longest_kymo
-    figure;
+    theFigureHandles(end+1)=figure;
     imagesc(longest_cell_kymo)
     colormap gray
     title('kymo for the longest cell')
@@ -176,7 +217,7 @@ if opts.int_in_time
         int_in_time_all = [int_in_time_all, sum(kymograph(:,i))];
     end
     
-    figure; hold on;
+    theFigureHandles(end+1)=figure; hold on;
     plot(int_in_time_all,'r.-')
     plot(int_in_time_longest,'b.-')
     
@@ -205,7 +246,7 @@ if opts.lengths_in_time
         int_i_nonzero = int_i(int_i>0);
         lll = [lll, length(int_i_nonzero)];
     end
-    figure
+    theFigureHandles(end+1)=figure;
     plot(lll*pix_to_micro)
     hold on
     plot(abs(diff(lll*pix_to_micro)),'r')
@@ -345,7 +386,14 @@ switch choose_case
         y_coord_of_invag = [134 327 329 318 102];
 end
 
+
+
 end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% End of main function
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -550,7 +598,9 @@ end
 function [kymograph_with_division_marks, kymograph_clean] = make_kymo_from_B(B, temp_L, opts)
 
 
-kymograph_with_division_marks = zeros(temp_L, size(B,2));
+kymograph_with_division_marks = ones(temp_L, size(B,2))*-0.0003; % -0.3 is easily found value to replace background by white later.. 
+
+%kymograph_with_division_marks = zeros(temp_L, size(B,2));
 kymograph_clean = zeros(temp_L, size(B,2));
 
 shift_matrix = [];
@@ -562,15 +612,18 @@ for i = 1:size(B,2)
     kym_clean_i = [];
     
     for j = 2:size(B,1)
+        
        col_j = B{j,i};
        col_j_marks = col_j;
        %mark a separation between the parent and daughter:
        if length(col_j)>0 %& j>2      
            
-           col_j_marks(end) = - 1*0.0001010101;%random number that is easy to find
-           col_j_marks(1) = - 1*0.0001010101;           
+            % mark both ends of bacteria (-MW comment)
+            col_j_marks(end) = -0.0001; % random number that is easy to find
+            col_j_marks(1)   = -0.0001; 
+            
        end
-       
+              
        kym_div_makrs_i = [kym_div_makrs_i; col_j_marks]; 
        kym_clean_i = [kym_clean_i; col_j];
        
@@ -645,13 +698,13 @@ end
 
 
 
-function plot_ftsA_profiles_in_time(B, choose_case)
+function figureHandles= plot_ftsA_profiles_in_time(B, choose_case,figureHandles)
 
 % plot ftsA profile in times; lengths normalized to [0 1]
 % works best for choose_case  =21 (exp growth)
 A = [];
 
-figure;
+figureHandles(end+1)=figure;
 hold on
 %remove the time lines:
 
