@@ -329,8 +329,8 @@ saveas(hFig3d,[OUTPUTFOLDER 'EPS_Figure3D.eps'],'epsc');
 %% (4b-c)
 
 mw_getstatisticsandmakefigure;
-hfig4B = h1;
-hfig4C = h2;
+%hfig4B = h1;
+hfig4B = h2;
 
 mw_fitdivisiondatatosimulations
 
@@ -348,6 +348,30 @@ saveas(hfig4B,[OUTPUTFOLDER 'SVG_Figure4B.svg'],'svg');
 saveas(hfig4B,[OUTPUTFOLDER 'TIF_Figure4B.tif'],'tif');
 saveas(hfig4B,[OUTPUTFOLDER 'FIG_Figure4B.fig'],'fig');
 saveas(hfig4B,[OUTPUTFOLDER 'EPS_Figure4B.eps'],'epsc');
+
+%%
+
+NOSIMPLOTTING=1;
+
+DE_plot_rescaled_profiles_MinD
+mw_experimentalandsimulatedminD
+
+hfig4C = hExpMinFigs;
+
+% save figure in desired size
+figure(hfig4C);
+SIZE=[7.5,5.63];
+OFFSET = [2,2];
+set(hfig4C,'Units','centimeters','Position',[OFFSET SIZE]*2);%,...
+            %'PaperUnits','centimeters','PaperSize',SIZE);
+MW_makeplotlookbetter(10*2);
+
+set(hfig4C,'RendererMode','manual','Renderer','Painters');
+
+saveas(hfig4C,[OUTPUTFOLDER 'SVG_Figure4C.svg'],'svg');
+saveas(hfig4C,[OUTPUTFOLDER 'TIF_Figure4C.tif'],'tif');
+saveas(hfig4C,[OUTPUTFOLDER 'FIG_Figure4C.fig'],'fig');
+saveas(hfig4C,[OUTPUTFOLDER 'EPS_Figure4C.eps'],'epsc');
 
 %%
 

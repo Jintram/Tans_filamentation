@@ -79,14 +79,14 @@ if exist('plotMore','var')
 end
 
 %% Plot fitted ratios
-figure(h1); hold on;
+figure(h2); hold on;
 for dataSetIndex = 1:numel(datasetsPaths)
     % calculate ratios
     %scatter(myLengthSumNewborns{dataSetIndex},Ratios{dataSetIndex}.*size(output.F.prettyOutputImage,2),'.k');
 
     % ratios w. rescaled lengths
     scatter(myLengthSumNewborns{dataSetIndex}.*linearFitValues(2)+linearFitValues(1)-leftPadSize,...
-            Ratios{dataSetIndex}.*size(output.F.prettyOutputImage,2),'.k');
+            Ratios{dataSetIndex}.*size(output.F.prettyOutputImage,2),'.r');
         
 end
 

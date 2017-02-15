@@ -12,6 +12,7 @@
 % A(1):     6.027 um
 % A(3):     19.296 um
 % A(5):     26.814 um
+% Not used: A(2), 19.6800um; A(4), 17.9580um.
 
 % BASEDIR = 'F:\Experiments\Microscopy-Single Cell\rutgers\MinD_MG1655\'; % DE original
 BASEDIR = '\\storage01\data\AMOLF\groups\tans-group\Biophysics\Experiments_Dmitry\rutgers\MinD_MG1655\'; % server location

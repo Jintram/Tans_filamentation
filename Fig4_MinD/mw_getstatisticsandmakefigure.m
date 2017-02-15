@@ -117,11 +117,11 @@ xlabel('Length of cell [a.u.]');
 ylabel(['Relative location along cell']);
 
 %%
-h2=figure(2); 
+h2=figure(2); clf;
 imagesc(imrotate(output.D.prettyOutputImage,90)); 
 
 redColorMap = makeColorMap([1 1 1],[230 30 37]./255);%,[230 30 37]./255)
-colormap(redColorMap);
+colormap(greenColorMap);
 %colorbar;
 
 inputSettings.rangeIn = [size(output.D.prettyOutputImage,2),1];
