@@ -2,6 +2,7 @@
 % Gather some statistics from simulations
 %{
 options.showResultFigure=0;
+options.lengthSet=1:100;
 
 F_profiles_all_multipleRuns={}; D_profiles_all_multipleRuns={};
 for simIdx = 1:100
@@ -13,7 +14,7 @@ for simIdx = 1:100
 end
 %}
 
-load('D:\Local_Data\Dropbox\Dropbox\Filamentation recovery\MW\figures_new\Data\file20170210_simulationData.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
+load('D:\Local_Data\Dropbox\Dropbox\Filamentation recovery\MW\figures_new\Data\file20170210_simulationData2.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
 %% save
 
 %...
@@ -101,7 +102,8 @@ h1=figure(1); clf;
 imagesc(imrotate(output.F.prettyOutputImage,90)); 
 
 greenColorMap = makeColorMap([1 1 1],[65 148 68]./255);%,[105 189 69]./255)
-colormap(greenColorMap);
+redColorMap = makeColorMap([1 1 1],[230 30 37]./255);%,[230 30 37]./255)
+colormap(redColorMap);
 %colorbar;
 
 % recalculate y-axis
@@ -120,6 +122,7 @@ ylabel(['Relative location along cell']);
 h2=figure(2); clf;
 imagesc(imrotate(output.D.prettyOutputImage,90)); 
 
+greenColorMap = makeColorMap([1 1 1],[65 148 68]./255);%,[105 189 69]./255)
 redColorMap = makeColorMap([1 1 1],[230 30 37]./255);%,[230 30 37]./255)
 colormap(greenColorMap);
 %colorbar;
@@ -144,6 +147,62 @@ imshow(imrotate(simpleOutputImage,90),[]);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+%% This code obtained a subset of short simulation results.. 
+%{
+options.showResultFigure=0;
+options.lengthSet=1:14;
+
+shortF_profiles_all_multipleRuns={}; shortD_profiles_all_multipleRuns={};
+for simIdx = 1:100
+    %%
+    tic;
+    [shortF_profiles_all_multipleRuns{end+1}, shortD_profiles_all_multipleRuns{end+1}] = f0_simulations(options);
+    t2=toc;
+    disp(['Simulation finished, took ' num2str(t2) ' seconds.']);
+end
+
+%save('D:\Local_Data\Dropbox\Dropbox\Filamentation recovery\MW\figures_new\Data\file20170210_simulationData_ONLYSHORT.mat', 'shortD_profiles_all_multipleRuns', 'shortF_profiles_all_multipleRuns');
+%}
+
+
+%% Stick 'm together
+%{
+final_F_profiles_all_multipleRuns={};
+for i=1:numel(F_profiles_all_multipleRuns)
+    
+    final_F_profiles_all_multipleRuns{i} = [shortF_profiles_all_multipleRuns{i}; F_profiles_all_multipleRuns{i}];
+    
+end
+
+final_D_profiles_all_multipleRuns={};
+for i=1:numel(D_profiles_all_multipleRuns)
+    
+    final_D_profiles_all_multipleRuns{i} = [shortD_profiles_all_multipleRuns{i}; D_profiles_all_multipleRuns{i}];
+    
+end
+%}
+%}
+%% Plot this
+%{
+% (Run averaging section first.)
+figure; clf; hold on;
+
+for i=1:14
+    len=numel(theMeanProfilesD{i});
+    errorbar(linspace(.5/len,1-.5/len,len),theMeanProfilesD{i},theStdProfilesD{i})
+end
+%}
 
 
 

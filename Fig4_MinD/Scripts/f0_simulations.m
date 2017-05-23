@@ -41,7 +41,11 @@ function [F_profiles_all, D_profiles_all] = f0_simulations(options)
 
 % close all;  
 write_video         = 0;                % save video file
-showFrames          = 0;                % show frames 
+
+% show frames 
+if ~isfield(options,'showResultFigure')
+    options.showFrames          = 0;                
+end
 
 if ~exist('options','var')
     options = {};
@@ -170,15 +174,19 @@ kappaE      = 0.02;
 
 
 % figure
-if showFrames 
-    fig_kymos   = figure('position', [ 293         224        1200         600]); 
-    subplot(1,3,1); title('profiles'); hold on
-    subplot(1,3,2); title('minD'); hold on
-    subplot(1,3,3); title('ftsZ'); hold on
+if options.showFrames 
+    if ~isfield(options,'video_MW') % default
+        fig_kymos   = figure('position', [ 293         224        1200         600]); 
+        subplot(1,3,1); title('profiles'); hold on
+        subplot(1,3,2); title('minD'); hold on
+        subplot(1,3,3); title('ftsZ'); hold on
+    else % special Martijn W. settings
+        fig_kymos   = figure('position', [ 100         100        600         1200]); 
+    end
 end
 if write_video
-    writeObj = VideoWriter('example_60elements.mp4');
-    writeObj.FrameRate = 10;
+    writeObj = VideoWriter([options.outputDir 'simulationResult.avi']);
+    writeObj.FrameRate = 5;
     open(writeObj);
 end
 
@@ -317,29 +325,80 @@ for currentLength = lengthSet(:)'             % currentLength = lengthSet(i); le
         D_all   = [D_all; D];
         
         
-        if showFrames 
-            % plot the Number profiles for three species:
-            figure(fig_kymos);
-            subplot(1,3,1); cla;
-            plot(1:currentLength+1, F(1:currentLength+1), 'b.-')    % ftsz
-            plot(1:currentLength+1, D(1:currentLength+1), 'g.-')    % minD
-            plot(1:currentLength+1, E(1:currentLength+1), 'r.-')    % minE            
-           
-            xlim([0 currentLength+2])
-            ylim([0 15])            % yMax is subject to change
-            pause(0.0)              % pause?
-            drawnow
-            title({['Length: ' num2str(currentLength)],...
-                    ['Frame iteration: ' num2str(frameIterator)],...
-                    ['Total iteration: ' num2str(iterTotCounter)]})  
-                       
-            % one can imagesc(F_all) - to see kymograph of F for all frames.
-            subplot(1,3,2); cla; imagesc(D_all);
-            subplot(1,3,3); cla; imagesc(F_all);            
- 
-            if write_video
-                frame = getframe(gcf);
-                writeVideo(writeObj, frame);
+        if options.showFrames 
+            if ~isfield(options,'video_MW') % default style
+            
+                % plot the Number profiles for three species:
+                figure(fig_kymos);
+                subplot(1,3,1); cla;
+                plot(1:currentLength+1, F(1:currentLength+1), 'b.-')    % ftsz
+                plot(1:currentLength+1, D(1:currentLength+1), 'g.-')    % minD
+                plot(1:currentLength+1, E(1:currentLength+1), 'r.-')    % minE            
+
+                xlim([0 currentLength+2])
+                ylim([0 15])            % yMax is subject to change
+                pause(0.0)              % pause?
+                drawnow
+                title({['Length: ' num2str(currentLength)],...
+                        ['Frame iteration: ' num2str(frameIterator)],...
+                        ['Total iteration: ' num2str(iterTotCounter)]})  
+
+                % one can imagesc(F_all) - to see kymograph of F for all frames.
+                subplot(1,3,2); cla; imagesc(D_all);
+                subplot(1,3,3); cla; imagesc(F_all);            
+
+                if write_video
+                    frame = getframe(gcf);
+                    writeVideo(writeObj, frame);
+                end
+                
+            else % Do it Martijn W. style                                
+                
+                MinDColor = [65 148 68]/255; MinEColor = [.7 .7 .7];
+                speciesColors = [MinDColor; MinEColor]; % [0.3467    0.5360    0.6907; 0.9153    0.2816    0.2878];
+                greenColorMap = makeColorMap([1 1 1],[65 148 68]./255);%,[105 189 69]./255)
+                
+                % plot the Number profiles for three species:
+                figure(fig_kymos);
+                subplot(2,1,1); cla; hold on; 
+                %plot(1:currentLength+1, F(1:currentLength+1), 'b.-')    % ftsz
+                sumD = sum(D); sumE = sum(E); 
+                plot(1:currentLength+1, D(1:currentLength+1)./sumD, '.-','LineWidth',3,'Color',speciesColors(1,:))    % minD
+                plot(1:currentLength+1, E(1:currentLength+1)./sumE, '.-','LineWidth',3,'Color',speciesColors(2,:))    % minE            
+                
+                plot(1:currentLength+1,mean(D_all)./sumD,'.-','LineWidth',3,'Color','k')
+                
+                set(gca,'XTick',[]);
+                set(gca,'YTick',[]);
+                xlabel('Cell Axis (a.u.)','FontSize',20);
+                ylabel('Concentration Protein (a.u.)','FontSize',20);
+               
+                
+                legH=legend('MinD','MinE','Mean MinD'); set(legH,'FontSize',20);
+                
+                xlim([0 currentLength+2])
+                ylim([0,1/(currentLength)*3]); % ylim([0 15])            % yMax is subject to change
+                pause(0.0)              % pause?
+                drawnow
+                %title({['Length: ' num2str(currentLength)],...
+                %        ['Frame iteration: ' num2str(frameIterator)],...
+                %        ['Total iteration: ' num2str(iterTotCounter)]})  
+
+                % one can imagesc(F_all) - to see kymograph of F for all frames.
+                subplot(2,1,2); cla; MW_makeplotlookbetter(20);
+                imagesc(D_all); colormap(greenColorMap);
+                set(gca,'XTick',[]); set(gca,'YTick',[]);
+                xlabel('Cell Axis (a.u)','FontSize',20);
+                ylabel('Time (a.u.)','FontSize',20);
+                %subplot(1,3,3); cla; imagesc(F_all);            
+
+                if write_video
+                    frame = getframe(gcf);
+                    writeVideo(writeObj, frame);
+                end
+                
+                
+                
             end
         end
     end

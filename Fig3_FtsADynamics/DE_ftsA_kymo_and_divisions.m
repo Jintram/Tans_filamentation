@@ -44,7 +44,9 @@ Font_size                   = 6;
 pix_to_micro                = 0.0406*2;
 
 opts.centered_kymograph     = 1;
-opts.contrast_int_against_black_background = 1;
+if ~isfield(opts,'contrast_int_against_black_background')
+    opts.contrast_int_against_black_background = 1;
+end
 opts.plot_longest_kymo      = 1;
 opts.int_in_time            = 1;
 opts.lengths_in_time        = 1;
@@ -85,8 +87,25 @@ path_i          = make_path(path_root, choose_case);
 % cells.
 [kymograph, kymograph_clean] = make_kymo_from_B(B, temp_L, opts);
 
+oldkymograph = kymograph;
+backgroundIndices = (kymograph==-0.0003);
+
+if isfield(opts,'normalize')
+    datapile=kymograph(:);
+    
+    ignoreIndices = datapile<0;
+    maxkymograph   = max(datapile);
+    minkymograph   = min(datapile(~ignoreIndices));
+    rangekymograph = maxkymograph-minkymograph;
+    kymograph=(kymograph-minkymograph)./rangekymograph;
+    
+    % restore "marker" values
+    kymograph(ignoreIndices)=oldkymograph(ignoreIndices);
+end
+
+
+
 if isfield(opts,'whiteBackground')
-    backgroundIndices = (kymograph==-0.0003);
     kymograph(backgroundIndices) = max(kymograph(:));
 end
 
@@ -112,7 +131,9 @@ theFigureHandles(end+1)=figure;
 
 % Actual plotting of the kymograph
 imagesc(kymograph);
-colormap gray
+myColormap = makeColorMap([0,0,0],[1,1,1]);
+colormap(myColormap);
+%colormap gray
 hold on;
 
 % plot the separators between cells

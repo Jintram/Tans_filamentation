@@ -18,8 +18,8 @@ for ii=1:numel(SELECTEDPLOTS)
     theDataIndex=SELECTEDPLOTS(ii);
     
     % Note that the corresponding profile can be calculated from the fit. So
-    simulationIndex = round(A(theDataIndex).length_range.*linearFitValues(2)+linearFitValues(1)-leftPadSize);
-    simulationIndex = round(SELECTEDSIMLOCATIONS(ii));
+    simulationIndex = round(A(theDataIndex).length_range.*linearFitValues(2)+linearFitValues(1));
+    %simulationIndex = round(SELECTEDSIMLOCATIONS(ii));
     % calculate simulated profile
     currentSimProfile      = theMeanProfilesD{simulationIndex};
     currentSimProfileStd   = theStdProfilesD{simulationIndex};
@@ -53,11 +53,20 @@ for ii=1:numel(SELECTEDPLOTS)
         %errorbar(currentSimProfileX,normcurrentProfile,normcurrentProfileStd,'Color',[.5 .5 .5]);
         
         % plot experimental data (normalized x)
-        plot(normcurrentXData,normcurrentYData,'LineWidth',3,'Color','k');   
+        plot(normcurrentXData,normcurrentYData,'LineWidth',3,'Color','k');           
+        
+        set(gca, 'XTickLabel',{'0',sprintf('%0.1f',A(theDataIndex).length_range)}, 'XTick',[0,1]);
     else
         % plot experimental data with x-axis
         plot(currentXData,normcurrentYData,'LineWidth',3,'Color',LINECOLOR);
         xlim([0 max(currentXData)])
+        
+        inputSettings.rangeIn = [0,max(A(theDataIndex).x)];
+        inputSettings.rangeOut = round([0,A(theDataIndex).length_range]*10)/10;
+        inputSettings.desiredSpacing = round(A(theDataIndex).length_range*10)/10;
+        [tickLocationsOldMetric, correspondingLabels] = labelremapping(inputSettings) 
+        set(gca, 'XTickLabel',correspondingLabels, 'XTick',tickLocationsOldMetric);
+
     end
 
     % cosmetics    
@@ -75,13 +84,7 @@ for ii=1:numel(SELECTEDPLOTS)
     %leg(ii)=legend(theText,'Location','EastOutside');
     %theText=[num2str(round(A(theDataIndex).length_range)) '\mum'];
     %text(A(theDataIndex).length_range*.1,0.45,theText,'Color','k');%,'BackgroundColor',[1 1 1])
-    
-    inputSettings.rangeIn = [0,max(A(theDataIndex).x)];
-    inputSettings.rangeOut = round([0,A(theDataIndex).length_range]*10)/10;
-    inputSettings.desiredSpacing = round(A(theDataIndex).length_range*10)/10;
-    [tickLocationsOldMetric, correspondingLabels] = labelremapping(inputSettings) 
-    set(gca, 'XTickLabel',correspondingLabels, 'XTick',tickLocationsOldMetric);
-    
+        
     MW_makeplotlookbetter(20);
     
 end

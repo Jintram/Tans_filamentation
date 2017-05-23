@@ -3,6 +3,12 @@
 mw_getstatisticsandmakefigure;
 %}
 
+THESIMULATEDLENGHTS = [2:101];
+if numel(THESIMULATEDLENGHTS)~=size(output.F.prettyOutputImage,1)
+    warning('The # elements in your simulation and given by THESIMULATEDLENGHTS are inconsistent.');
+    % THESIMULATEDLENGHTS are e.g. used for calculating the x axis
+end
+
 %% Get data from Rutger's experiment.
 WHATDATA = 'tetracycline';
 NOSAVEPLEASE=1;
@@ -29,12 +35,11 @@ selectedLengthSumNewborns = allLengthSumNewborns(selectionIndices);
 
 
 %roundedAllLengthSumNewborns = round(AllLengthSumNewborns);
-theSimulatedLengths = [15:100];
 
 % Create paddedSimData, which has zero's where a concentration was not
 % simulated
-leftPadSize = min(theSimulatedLengths)-1;
-paddedSimData = [zeros(leftPadSize, size(output.F.prettyOutputImage,2));...
+%leftPadSize = min(THESIMULATEDLENGHTS)-1;
+paddedSimData = [...zeros(leftPadSize, size(output.F.prettyOutputImage,2));...
                  output.F.prettyOutputImage;...
                  zeros(100, size(output.F.prettyOutputImage,2));];
 
@@ -56,7 +61,7 @@ myErrorFun = @(x) -sum( paddedSimData(sub2ind(...
                                         )) .^2 );
                      
 % Use fminsearch to find minimum of that function (note the minus sign above)
-linearFitValuesforPadded = fminsearch(myErrorFun,[0,2])
+linearFitValues = fminsearch(myErrorFun,[0,2])
 
 
 %%
@@ -85,10 +90,21 @@ for dataSetIndex = 1:numel(datasetsPaths)
     %scatter(myLengthSumNewborns{dataSetIndex},Ratios{dataSetIndex}.*size(output.F.prettyOutputImage,2),'.k');
 
     % ratios w. rescaled lengths
-    scatter(myLengthSumNewborns{dataSetIndex}.*linearFitValues(2)+linearFitValues(1)-leftPadSize,...
+    scatter(myLengthSumNewborns{dataSetIndex}.*linearFitValues(2)+linearFitValues(1),...-leftPadSize,...
             Ratios{dataSetIndex}.*size(output.F.prettyOutputImage,2),'.r');
         
 end
+
+% Now xticks can be set.
+inputSettings.rangeIn = [0 THESIMULATEDLENGHTS(end)];
+inputSettings.rangeOut = (inputSettings.rangeIn-linearFitValues(1))./linearFitValues(2);
+inputSettings.desiredSpacing = 5;
+inputSettings.desiredDecimalsTicks = 0;
+[tickLocationsOldMetric, correspondingLabels] = labelremapping(inputSettings);
+
+% Update ticks and labels
+set(gca, 'XTick',tickLocationsOldMetric,'XTickLabel',correspondingLabels);
+xlabel('Length of cell [\mum]');
 
 % ratios w. rescaled lengths
 %scatter(selectedLengthSumNewborns.*linearFitValues(2)+linearFitValues(1)-leftPadSize,...
