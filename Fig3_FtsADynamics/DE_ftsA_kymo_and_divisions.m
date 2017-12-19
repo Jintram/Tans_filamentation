@@ -167,7 +167,7 @@ if ~isfield(opts,'hideExtraInfo')
 end
 disp(['Overall kymograph based on: ' title_short_path])
 
-ylabel('Cellular axis (\mum)')%, 'FontSize', Font_size)
+ylabel('Cellular axis (µm)')%, 'FontSize', Font_size)
 xlabel('Time (min)')
 
 convert_x_y_ticks(opts);

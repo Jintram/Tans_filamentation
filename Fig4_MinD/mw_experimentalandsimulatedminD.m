@@ -14,9 +14,12 @@ SELECTEDPLOTS=[1,3,5];
 SELECTEDSIMLOCATIONS=[3.5, 31, 60];
 hExpMinFigs=figure(3); clf;
 axes = []; leg = [];
+storedDataMinExperimentsDE=struct;
 for ii=1:numel(SELECTEDPLOTS)
+    %%
     theDataIndex=SELECTEDPLOTS(ii);
     
+    %%
     % Note that the corresponding profile can be calculated from the fit. So
     simulationIndex = round(A(theDataIndex).length_range.*linearFitValues(2)+linearFitValues(1));
     %simulationIndex = round(SELECTEDSIMLOCATIONS(ii));
@@ -67,6 +70,10 @@ for ii=1:numel(SELECTEDPLOTS)
         [tickLocationsOldMetric, correspondingLabels] = labelremapping(inputSettings) 
         set(gca, 'XTickLabel',correspondingLabels, 'XTick',tickLocationsOldMetric);
 
+        % Storing data for later use
+        storedDataMinExperimentsDE(ii).x = currentXData./max(currentXData).*A(theDataIndex).length_range;
+        storedDataMinExperimentsDE(ii).y = normcurrentYData;
+                
     end
 
     % cosmetics    
@@ -75,7 +82,7 @@ for ii=1:numel(SELECTEDPLOTS)
     %title(theDataIndex);
     
     if ii==3
-        xlabel('Cellular axis [\mum]')
+        xlabel('Cellular axis (µm)')
     end
     if ii==2
         ylabel('Normalized MinD-YFP signal')

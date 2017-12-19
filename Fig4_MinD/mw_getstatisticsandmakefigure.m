@@ -14,7 +14,7 @@ for simIdx = 1:100
 end
 %}
 
-load('D:\Local_Data\Dropbox\Dropbox\Filamentation recovery\MW\figures_new\Data\file20170210_simulationData2.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
+load('D:\Local_Data\Dropbox\Dropbox\Filamentation_recovery_Personal\MW\figures_new\Data\file20170210_simulationData2.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
 %% save
 
 %...
@@ -45,7 +45,7 @@ for lengthIdx = 1:numel(F_profiles_all_multipleRuns{1})
         
 end
 
-%%
+%% Create images that show profiles as function of length
 
 dataNames={'F','D'};
 allData.F = theMeanProfilesF;
@@ -119,8 +119,9 @@ xlabel('Length of cell [a.u.]');
 ylabel(['Relative location along cell']);
 
 %%
-h2=figure(2); clf;
+h2=figure(2); clf; 
 imagesc(imrotate(output.D.prettyOutputImage,90)); 
+hold on;
 
 greenColorMap = makeColorMap([1 1 1],[65 148 68]./255);%,[105 189 69]./255)
 redColorMap = makeColorMap([1 1 1],[230 30 37]./255);%,[230 30 37]./255)
@@ -137,6 +138,7 @@ set(gca,'YTick',tickLocationsOldNewMetric,'YTickLabel',correspdongingLabels);
 
 xlabel('Length of cell [a.u.]');
 ylabel(['Relative location along cell']);
+
 
 %%
 
