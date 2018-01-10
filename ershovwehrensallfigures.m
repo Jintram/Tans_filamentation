@@ -10,7 +10,7 @@
 % 1) Add line in fig 1d
 % 2) Create distributions for division times for different lengths
 
-OUTPUTFOLDER = 'D:\Local_Data\Dropbox\Dropbox\Filamentation_recovery_Personal\MW\figures_new\Matlab_export3\';
+OUTPUTFOLDER = 'U:\MANUSCRIPTS\Filamentation_recovery_Personal\MW\figures_new\Matlab_export4\';
 optionalParameters.style='CBmanuscript';
 
 %% Figure 1 ===============================================================
@@ -1420,6 +1420,39 @@ MW_makeplotlookbetter(8*2);
 saveas(hNucs2, [OUTPUTFOLDER 'SVG_SuppX_Nucleoids_p2.svg']);
 saveas(hNucs2, [OUTPUTFOLDER 'FIG_SuppX_Nucleoids_p2.fig']);
 saveas(hNucs2, [OUTPUTFOLDER 'TIF_SuppX_Nucleoids_p2.fig']);
+
+%% 3rd round revisions: cellular size per nucleoid
+
+NUCLEOIDFLAG = 1;
+RUNSECTIONSFILEFTS='loadNucleoidData';
+script20160422_filamentRecoveryFtslabelLocations;
+
+RUNSECTIONSFILEFTS = 'volumePerNucleoid';
+script20160422_filamentRecoveryFtslabelLocations;
+
+clear NUCLEOIDFLAG
+
+figure(hLengthPerNucleoid1);
+SIZE=[3.0,2.0]; 
+MW_makeplotlookbetter(8*2,[],SIZE,1);
+saveas(hLengthPerNucleoid1, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_p1.svg']);
+saveas(hLengthPerNucleoid1, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_p1.fig']);
+saveas(hLengthPerNucleoid1, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p1.tif']);
+
+figure(hLengthPerNucleoid2);
+SIZE=[3.0,2.0]; 
+MW_makeplotlookbetter(8*2,[],SIZE,1);
+saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_p2.svg']);
+saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_p2.fig']);
+saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p2.tif']);
+
+figure(hLengthPerNucleoidLegend);
+SIZE=[5.5,2.0];
+MW_makeplotlookbetter(8*2,[],SIZE,1);
+saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_pLegend.svg']);
+saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_pLegend.fig']);
+saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_pLegend.tif']);
+
 %% Indentations
 
 script20171110_rebuttalplots1
