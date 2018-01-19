@@ -1440,6 +1440,7 @@ saveas(hLengthPerNucleoid1, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_p1.fig']);
 saveas(hLengthPerNucleoid1, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p1.tif']);
 
 figure(hLengthPerNucleoid2);
+xlim([0,8]);
 SIZE=[3.0,2.0]; 
 MW_makeplotlookbetter(8*2,[],SIZE,1);
 saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_p2.svg']);
@@ -1447,11 +1448,19 @@ saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_p2.fig']);
 saveas(hLengthPerNucleoid2, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p2.tif']);
 
 figure(hLengthPerNucleoidLegend);
-SIZE=[5.5,2.0];
+SIZE=[5.5,4.0];
 MW_makeplotlookbetter(8*2,[],SIZE,1);
 saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_pLegend.svg']);
 saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_pLegend.fig']);
 saveas(hLengthPerNucleoidLegend, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_pLegend.tif']);
+
+figure(hLengthPerNucleoid5);
+SIZE=[3.0,2.0]; 
+MW_makeplotlookbetter(8*2,[],SIZE,1);
+saveas(hLengthPerNucleoid5, [OUTPUTFOLDER 'SVG_SuppX_LperNucleoids_p1b.svg']);
+saveas(hLengthPerNucleoid5, [OUTPUTFOLDER 'FIG_SuppX_LperNucleoids_p1b.fig']);
+saveas(hLengthPerNucleoid5, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p1b.tif']);
+
 
 %% Indentations
 
