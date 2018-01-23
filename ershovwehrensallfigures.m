@@ -10,7 +10,7 @@
 % 1) Add line in fig 1d
 % 2) Create distributions for division times for different lengths
 
-OUTPUTFOLDER = 'U:\MANUSCRIPTS\Filamentation_recovery_Personal\MW\figures_new\Matlab_export4\';
+OUTPUTFOLDER = 'U:\MANUSCRIPTS\Filamentation_recovery_Personal\MW\figures_new\Matlab_export_final\';
 optionalParameters.style='CBmanuscript';
 
 %% Figure 1 ===============================================================
