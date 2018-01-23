@@ -1,8 +1,8 @@
 
 %% Load data
 
-load('H:\EXPERIMENTAL_DATA_2017\2017-09-19_MinD-YFP\PART4_MinD-YFP_movies\pos1\analysis\straightenedCells\PART4_MinDpos1_straightFluorData.mat');
-load('H:\EXPERIMENTAL_DATA_2017\2017-09-19_MinD-YFP\PART4_MinD-YFP_movies\pos1\data\pos1-skeletonData.mat');
+load('H:\EXPERIMENTAL_DATA_2017\2017-09-19_FilaRecovery_MinD-YFP\PART4_MinD-YFP_movies\pos1\analysis\straightenedCells\PART4_MinDpos1_straightFluorData.mat');
+load('H:\EXPERIMENTAL_DATA_2017\2017-09-19_FilaRecovery_MinD-YFP\PART4_MinD-YFP_movies\pos1\data\pos1-skeletonData.mat');
 
 if ~exist('p','var') % if ~isfield(p,'micronsPerPixel')
     p.micronsPerPixel=   0.0438;

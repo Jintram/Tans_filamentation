@@ -5,10 +5,9 @@
 %% This script generates all figures for the Ershov/Wehrens et al paper.
 % 
 % 
+% Note that the figure numbers given below might not be correct
+% any more due to many revisions of the manuscript.
 
-% TODOs
-% 1) Add line in fig 1d
-% 2) Create distributions for division times for different lengths
 
 OUTPUTFOLDER = 'U:\MANUSCRIPTS\Filamentation_recovery_Personal\MW\figures_new\Matlab_export_final\';
 optionalParameters.style='CBmanuscript';
@@ -75,6 +74,8 @@ set(figure1DHandle,'RendererMode','manual','Renderer','Painters');
 saveas(figure1DHandle,[OUTPUTFOLDER 'SVG_Figure1D.svg']);
 saveas(figure1DHandle,[OUTPUTFOLDER 'TIF_Figure1D.tif']);
 saveas(figure1DHandle,[OUTPUTFOLDER 'FIG_Figure1D.fig']);
+
+disp('Section done');
 
 %% (e)
 % cartoon made with Inkscape, see .svg file
@@ -659,6 +660,8 @@ saveas(hfig4C,[OUTPUTFOLDER 'EPS_Figure4B.eps'],'epsc');
 %% Extra MinD plots (not used because we suspect that the
 % overexpression of MinD actually alters the profile)
 
+clear p
+p.micronsPerPixel=   0.0438;
 script20170925_newMinProfiles3;
 
 figure(hMinD);
@@ -842,7 +845,13 @@ clear THINHELPINGLINES
 % "pathfinder" in adobe illustrator is convenient.
 script20171122_minicellsarea_extremelysimpleplot
 
+disp('Section done');
+
 %% (1e) Relative division location against time, grey dots
+
+% An extra plot for the main figure per request of reviewer.
+
+conditionIdx=1;
 
 TIMEDIVPLOTMAINFIG=1;
 
@@ -870,12 +879,17 @@ saveas(h1D,[OUTPUTFOLDER 'FIG_Figure1Ev2' FIGLABELS{conditionIdx} '.fig']);
 
 clear TIMEDIVPLOTMAINFIG
 
+disp('Section done');
+
+
 %% (s5) Relative division location against time
 
 WHATDATAS = {'tetracycline','temperature','sulA','deltaMinTET'};
 LENGTHFIELDS = {'length_fitNew','length_skeleton','length_skeleton','length_skeleton'};
 FIGLABELS = {'','','','_deltaMin'}; %can be removed, used to be %FIGLABELS = {'A','B','C'}
 NOSAVEPLEASE=1;
+
+clear TIMEDIVPLOTMAINFIG
 
 for conditionIdx=1:3
 
@@ -1044,6 +1058,8 @@ saveas(hNBSInset,[OUTPUTFOLDER 'SVG_FigureS8inset.svg']);
 saveas(hNBSInset,[OUTPUTFOLDER 'TIF_FigureS8inset.tif']);
 saveas(hNBSInset,[OUTPUTFOLDER 'FIG_FigureS8inset.fig']);
 
+disp('Section done');
+
 %% (1f) Preference (distribution) of division location (random)
 
 WHATDATA = 'tetracycline';
@@ -1089,6 +1105,8 @@ RUNSECTIONSFILEFTS='compareDivisionsWRings';
 script20160422_filamentRecoveryFtslabelLocations
 %}
 
+disp('Section done');
+
 %% (s2h) manual plotting based on figure & caption Dmitry
 % Dmitry plot re. division at brightest rings or not
 % "Correlation of intensity of FtsA-YFP ring and probability of division at
@@ -1119,7 +1137,14 @@ saveas(hDECorrRing,[OUTPUTFOLDER 'SVG_SuppFigure2H.svg']);
 saveas(hDECorrRing,[OUTPUTFOLDER 'TIF_SuppFigure2H.tif']);
 saveas(hDECorrRing,[OUTPUTFOLDER 'FIG_SuppFigure2H.fig']);
 
+disp('Section done');
+
 %% (s11) sup extra kymographs
+%
+% Note that it might be necessary to clear all parameters before running
+% this section; otherwise it tries to print the wrong kymographs.
+% (TODO: fix this -MW.)
+
 EXTRAKYMOS = [9,7,10,17,14]; % max is 35, 11 is the one shown as main
 NOSAVEPLEASE=1;
 
@@ -1153,6 +1178,8 @@ for kymoIdx = 1:numel(EXTRAKYMOS)
     saveas(hFig3supp,[OUTPUTFOLDER 'FIG_FigureS11' labels{kymoIdx} '.fig'],'fig');
     saveas(hFig3supp,[OUTPUTFOLDER 'EPS_FigureS11' labels{kymoIdx} '.eps'],'epsc');
 end
+
+disp('Section done');
 
 %% (SX) Yet another plot, stats for growth rate w. length
 
@@ -1208,6 +1235,8 @@ saveas(hTheColorbarWithScatter,[OUTPUTFOLDER 'SVG_SFigureSXscat_cbar'  '.svg']);
 saveas(hTheColorbarWithScatter,[OUTPUTFOLDER 'TIF_SFigureSXscat_cbar'  '.tif']);
 saveas(hTheColorbarWithScatter,[OUTPUTFOLDER 'FIG_SFigureSXscat_cbar'  '.fig']);
 
+disp('Section done');
+
 %% Dmitry's clustering analysis
 
 WHATDATA = 'tetracycline';
@@ -1233,6 +1262,8 @@ DE_asymetry_pattern_clustering
 % (For 0-3um cells don't have clear div sites, and the first window could
 % be considered 0-6um.)
 
+disp('Section done');
+
 %% Simple plot showing n=L/2w being consistent with data
 
 figure; clf; hold on;
@@ -1247,7 +1278,10 @@ MW_makeplotlookbetter(20);
 
 %% Plot raw traces from Rutger's data
 
+ONESTOANALYZE=1:5;
 script20161222_branchplottingrutgerdata
+
+clear ONESTOANALYZE
 
 %% traces of mean growth over whole tetracycline experiment.
 
@@ -1464,6 +1498,9 @@ saveas(hLengthPerNucleoid5, [OUTPUTFOLDER 'TIF_SuppX_LperNucleoids_p1b.tif']);
 
 %% Indentations
 
+MICRONSPERPIXEL = 0.0431;
+EXPORTFOLDERFRAMES=OUTPUTFOLDER;
+
 script20171110_rebuttalplots1
 
 %% Expected absolute sizes 
@@ -1490,7 +1527,7 @@ script20171113_absolutesizesonemoretime
 hJet = figure; colormap jet; colorbar;
 saveas(hJet, [OUTPUTFOLDER 'SVG_SuppFigure4_colorbarJet.svg']);
 saveas(hJet, [OUTPUTFOLDER 'FIG_SuppFigure4_colorbarJet.fig']);
-saveas(hJet, [OUTPUTFOLDER 'TIF_SuppFigure4_colorbarJet.TIF']);
+saveas(hJet, [OUTPUTFOLDER 'TIF_SuppFigure4_colorbarJet.tif']);
 
 %%
 disp('This is the end of the ershovwehrensallfigures.m script.');

@@ -4,8 +4,8 @@ OUTLINECOLOR = [48, 197, 221]/255;
 
 %% Load data
 
-load('G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\analysis\straightenedCells\2016-04-07pos2crop_straightFluorData.mat')
-load('G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\data\pos2crop-Schnitz.mat');
+load('G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\analysis\straightenedCells\2016-04-07pos2crop_straightFluorData.mat')
+load('G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\data\pos2crop-Schnitz.mat');
 
 micronsPerPixel = 0.0431; % see G:\EXPERIMENTAL_DATA_2016\a_incoming\2016-04-07\pos2crop_parameters.mat, p struct
 

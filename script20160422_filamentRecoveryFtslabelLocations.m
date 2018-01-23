@@ -15,20 +15,20 @@ if any(strcmp(RUNSECTIONSFILEFTS,{'all','loadData'}))
 
     % stored skeleton analysis
     skeletonDataPaths={...
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\data\pos2crop-skeletonData.mat',...
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos3crop\data\pos3crop-skeletonData.mat'};
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\data\pos2crop-skeletonData.mat',...
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos3crop\data\pos3crop-skeletonData.mat'};
         % per frame the skeleton
 
     % stored fluorescence data
     fluorDataPaths={...
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\analysis\straightenedCells\2016-04-07pos2crop_straightFluorData.mat',...
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos3crop\analysis\straightenedCells\2016-04-07pos3crop_straightFluorData.mat'};
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\analysis\straightenedCells\2016-04-07pos2crop_straightFluorData.mat',...
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos3crop\analysis\straightenedCells\2016-04-07pos3crop_straightFluorData.mat'};
         %(note that kymograph was chosen from G:\EXPERIMENTAL_DATA_2016\a_incoming\2016-04-07\pos2crop), first 20 frames
         %kymographs are made with script20160610_PetraFtsLocations    
 
     schnitzDataPaths={
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\data\pos2crop-Schnitz.mat',...
-        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos3crop\data\pos3crop-Schnitz.mat'};
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\data\pos2crop-Schnitz.mat',...
+        'G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos3crop\data\pos3crop-Schnitz.mat'};
     
 end    
     

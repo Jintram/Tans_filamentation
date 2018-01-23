@@ -122,8 +122,10 @@ figure(hA);
 plot(Lprime,(1.8)./(growthRatesMean.*log(2)),'k:','LineWidth',2);
 ylim([0,60]);
 
-saveas(hA, [OUTPUTDIR 'areaAnalysis_LvsA.svg']);
-saveas(hA, [OUTPUTDIR 'areaAnalysis_LvsA.fig']);
+if ~exist('NOSAVEPLEASE','var')
+    saveas(hA, [OUTPUTDIR 'areaAnalysis_LvsA.svg']);
+    saveas(hA, [OUTPUTDIR 'areaAnalysis_LvsA.fig']);
+end
 %%
 
 % figure; clf; hold on;

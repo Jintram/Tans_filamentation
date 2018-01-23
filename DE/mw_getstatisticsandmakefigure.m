@@ -14,7 +14,7 @@ for simIdx = 1:100
 end
 %}
 
-load('D:\Local_Data\Dropbox\Dropbox\Filamentation_recovery_Personal\MW\figures_new\Data\file20170210_simulationData2.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
+load('\\storage01\data\AMOLF\users\wehrens\MANUSCRIPTS\Filamentation_recovery_Personal\MW\figures_new\Data\file20170210_simulationData2.mat','F_profiles_all_multipleRuns','D_profiles_all_multipleRuns');
 %% save
 
 %...

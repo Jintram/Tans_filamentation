@@ -44,7 +44,9 @@ if ~exist([OUTPUTFOLDER SUBFOLDER],'dir'), mkdir([OUTPUTFOLDER SUBFOLDER]), end
 if ~exist('ONESTOANALYZE','var')
     ONESTOANALYZE=[1:11];
 end
+
 ONESTOPLOT=[1:5];
+
 datasetsPaths = ...
 { ...
 ... Note that the parameter ONESTOANALYZE makes a subselection of this data.
@@ -174,7 +176,7 @@ shiftTimes=[]; % could use "myTimes" instead to get actual switch times
 for ii=1:numel(datasetsPaths) %(datasetsPaths)
     
     shiftTimes(ii) = switchPoints{ii}(1,end);    
-    plot(gatheredOutput{ii}.binCenters-myTimes(ii),gatheredOutput{ii}.meanValuesForBins,'LineWidth',2);
+    plot(gatheredOutput{ii}.binCenters-shiftTimes(ii),gatheredOutput{ii}.meanValuesForBins,'LineWidth',2);
     
 end
 

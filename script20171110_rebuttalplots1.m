@@ -1,14 +1,15 @@
 
 %% Indentations 
 
-EXPORTFOLDERFRAMES='D:\Local_Data\Dropbox\Dropbox\Filamentation_recovery_Personal\MW\figures_new\Matlab_export3\indentations\';
-MICRONSPERPIXEL = 0.0431;
+if ~exist('EXPORTFOLDERFRAMES','var')
+    EXPORTFOLDERFRAMES='D:\Local_Data\Dropbox\Dropbox\Filamentation_recovery_Personal\MW\figures_new\Matlab_export3\indentations\';
+end
 
 for imgNr = [137,147,157,167]
 
     %%
     h=figure(imgNr); clf; hold on;
-    myImg=imread(['G:\EXPERIMENTAL_DATA_2016\2016-04-07_asc777_temperatureRecovery\pos2crop\images\pos2crop-p-2-' num2str(imgNr) '.tif']);
+    myImg=imread(['G:\EXPERIMENTAL_DATA_2016\2016-04-07_FilaRecovery_asc777\pos2crop\images\pos2crop-p-2-' num2str(imgNr) '.tif']);
 
     myCrop=myImg(594:(594+776),284:(284+467));
     %myCrop=myImg(639:1300, 363:667); % same as fluor img
